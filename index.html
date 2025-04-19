@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Nota Final</title>
+    <link rel="shortcut icon" href="ueg.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #2c5474; 
+            color: white; 
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: #333; 
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: white; 
+            margin: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .pass {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
+        .need {
+            font-weight: normal;
+            color: #555;
+        }
+        footer {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 40px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>UEG</h1>
+    </header>
+
+    <div class="container">
+        <h2>Cálculo de Nota Final</h2>
+        <label for="nota1">Nota 1º V.A. (Multiplicada por 2):</label>
+        <input type="number" id="nota1" placeholder="Digite a nota do 1º V.A." required>
+        
+        <label for="nota2">Nota 2º V.A. (Multiplicada por 3):</label>
+        <input type="number" id="nota2" placeholder="Digite a nota do 2º V.A. Caso não tenha digite 0" required>
+        
+        <button onclick="calcularNota()">Calcular Resultado</button>
+        
+        <div id="resultado" class="result"></div>
+        <div id="notaNecessaria" class="result"></div>
+    </div>
+
+    <footer>
+        Código feito por um aluno de contábeis (Gustavo), suscetível a eventuais erros.<br>
+            Lembrando que caso acredite que está incorreto verifique com seu professor.
+            <br><br> Observações: <br><br><br> Coloque a exata nota que conste no portal do discente. Exemplo 6,40 <br>
+            Caso não tenha feito a segunda V.A. coloque no campo o número 0 que irá mostrar a nota que precisa para passar.
+    </footer>
+
+    <script>
+        function calcularNota() {
+            const nota1 = parseFloat(document.getElementById('nota1').value);
+            const nota2 = parseFloat(document.getElementById('nota2').value);
+            
+            if (isNaN(nota1) || isNaN(nota2)) {
+                document.getElementById('resultado').textContent = "Por favor, insira notas válidas.";
+                document.getElementById('resultado').classList.remove('pass', 'fail');
+                document.getElementById('notaNecessaria').textContent = "";
+                return;
+            }
+
+            const resultadoNota1 = nota1 * 2;
+            const resultadoNota2 = nota2 * 3;
+            const notaFinal = (resultadoNota1 + resultadoNota2) / 5;
+
+            let resultadoTexto = "";
+            if (notaFinal >= 5.99) {
+                resultadoTexto = `Você passou! Nota final: ${notaFinal.toFixed(2)}`;
+                document.getElementById('resultado').classList.add('pass');
+                document.getElementById('resultado').classList.remove('fail');
+                document.getElementById('notaNecessaria').textContent = "";
+            } else {
+                resultadoTexto = `Você reprovou. Nota final: ${notaFinal.toFixed(2)}`;
+                document.getElementById('resultado').classList.add('fail');
+                document.getElementById('resultado').classList.remove('pass');
+
+                const notaNecessaria = (6 * 5 - resultadoNota1) / 3;
+
+                if (notaNecessaria > 10) {
+                    document.getElementById('notaNecessaria').textContent = `Não há nota possível para alcançar a média (precisa tirar mais que 10).`;
+                } else if (notaNecessaria > 0) {
+                    document.getElementById('notaNecessaria').textContent = `Você precisa tirar pelo menos ${notaNecessaria.toFixed(2)} na 2ª nota para passar.`;
+                } else {
+                    document.getElementById('notaNecessaria').textContent = `Você já passou! Não precisa de mais nenhuma nota.`;
+                }
+            }
+
+            document.getElementById('resultado').textContent = resultadoTexto;
+        }
+        // Código feito por um aluno de contábeis formado em T.I. caso precise de modificações
+        // É só mandar um e-mail para gusttarodrig@gmail.com que eu verifico 
+    
+    </script>
+
+</body>
+</html>
